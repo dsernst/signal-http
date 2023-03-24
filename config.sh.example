@@ -3,5 +3,9 @@
 export BOT_NUMBER=+15555555555 # number you've obtained for your bot
 export TEST_RECIPIENT=+14444444444 # your number
 
-# export CAPTCHA=""
-# export VERIFICATION_CODE=
+# For Profile settings
+export DISPLAY_NAME="GPT Bot"
+
+# For Account Registrations
+export CAPTCHA=""
+export VERIFICATION_CODE=""
