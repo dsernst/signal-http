@@ -1,0 +1,9 @@
+{
+  "name": "signal-http",
+  "version": "0.0.1",
+  "description": "Access signal-cli (Signal Messenger) over http (POST to send, webhooks to receive)",
+  "main": "index.js",
+  "author": "David Ernst <git@dsernst.com>",
+  "license": "MIT",
+  "private": false
+}
