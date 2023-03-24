@@ -10,3 +10,11 @@ Access signal-cli (Signal Messenger) over http: POST to send, webhooks to receiv
 4. Register your number with signal using by running the `./register.sh` script (follow the instructions within it)
 5. You can test whether it worked with the `./test.sh` script
 6. Save an image to `./avatar.png`, then run `./update-profile.sh` to update your signal bot's avatar and display name
+
+## Start Server to Listen for Incoming Messages
+
+```
+yarn start
+```
+
+(or equivalent like `npm start`)

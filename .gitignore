@@ -3,3 +3,4 @@ config.sh
 package-lock.json
 yarn.lock
 avatar.png
+*.log

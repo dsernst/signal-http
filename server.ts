@@ -1,3 +1,5 @@
+import { extractSender } from './extract-sender'
+
 const { spawn } = require('child_process')
 
 const command = './signal-cli -a $BOT_NUMBER daemon --dbus'
@@ -6,19 +8,34 @@ const fullCommand = `source ./config.sh && echo "Loaded Config" && ${command} &&
 
 const child = spawn(fullCommand, [], { shell: true })
 
+const debug = false
+
+let mostRecentSender = {
+  senderName: '',
+  senderPhone: '',
+  recipientPhone: '',
+}
+
 child.stdout.on('data', (data: Buffer) => {
-  console.log(`stdout 📥: ${stripTrailingNewline(String(data))}`)
-  //   if (data.includes('Body:')) {
-  //     console.log(String(data).slice(data.indexOf('Body:') + 5))
-  //   }
+  const string = String(data)
+  //   console.log(`stdout 📥: ${stripTrailingNewline(string)}`)
+  const envelopePrefix = 'Envelope from: '
+  if (string.includes(envelopePrefix)) {
+    const extracted = extractSender(string)
+    if (extracted) mostRecentSender = extracted
+  }
+  if (string.includes('Body:')) {
+    const message = string.split('Body:')[1]
+    console.log(`${mostRecentSender.senderName}: ${message}`)
+  }
 })
 
 child.stderr.on('data', (data: Buffer) => {
-  console.error(`stderr 🟡: ${stripTrailingNewline(String(data))}`)
+  debug && console.error(`stderr 🟡: ${stripTrailingNewline(String(data))}`)
 })
 
 child.on('error', (err: Buffer) => {
-  console.error('err ❌:', err)
+  debug && console.error('err ❌:', err)
 })
 
 function stripTrailingNewline(str: string): string {
