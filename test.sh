@@ -8,3 +8,6 @@
 
 # Test checking for new messages
 # ./signal-cli -a $BOT_NUMBER receive
+
+# Test running the daemon to receive new messages
+# ./signal-cli -a $BOT_NUMBER daemon --dbus
