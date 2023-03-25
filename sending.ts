@@ -13,7 +13,7 @@ app.post('/send', (req, res) => {
   if (to) {
     const escaped = (message || '')
       .replace(/\\/g, '\\\\')
-      .replace(/'/g, "'\\''")
+      // .replace(/'/g, "'\\''") Not needed
       .replace(/"/g, '\\"')
       .replace(/\[/g, '\\[')
       .replace(/\]/g, '\\]')
