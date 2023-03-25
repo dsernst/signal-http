@@ -11,10 +11,16 @@ app.post('/send', (req, res) => {
 
   // Is it ready to send out?
   if (to) {
-    let command = `${signal} --dbus send -m "${message}" ${toGroup ? `-g ${toGroup}` : to}`
+    const escaped = (message || '').replace(/"/g, '\\"')
+    let command = `${signal} --dbus send -m "${escaped}" ${toGroup ? `-g ${toGroup}` : to}`
     if (!debug) command += ' 2> /dev/null'
-    execSync(command)
-    res.send('OK')
+    try {
+      execSync(command)
+      res.send('OK')
+    } catch (error) {
+      debug && console.error('sending error ❌:', req.body, error)
+      res.send('ERROR')
+    }
   } else {
     console.error('❌ missing to:', req.body)
     res.status(400).send('Bad request, missing `to` field')
