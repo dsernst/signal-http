@@ -2,7 +2,7 @@ import { execSync } from 'child_process'
 import fastify from 'fastify'
 import { signal } from './path-to-signal'
 
-const debug = !!0
+const debug = process.env.DEBUG || !!0
 
 const app = fastify()
 app.post('/send', (req, res) => {

@@ -3,7 +3,7 @@ import axios from 'axios'
 import { signal } from './path-to-signal'
 import './clean-logs'
 
-const debug = !!0
+const debug = process.env.DEBUG || !!0
 
 const command = `${signal} -o json -a $BOT_NUMBER daemon --dbus`
 const receivingServer = spawn(command, [], { shell: true })
