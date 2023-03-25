@@ -7,6 +7,4 @@ app.post('/send', (req, res) => {
   res.send('OK')
 })
 
-app.listen({ port: 9460 }, () => {
-  console.log('🟢 Signal sending server listening on port 9460')
-})
+app.listen({ port: 9460 }, () => console.log('🟢 Signal sending server listening on port 9460'))
