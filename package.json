@@ -2,21 +2,24 @@
   "name": "signal-http",
   "version": "0.0.1",
   "description": "Access signal-cli (Signal Messenger) over http (POST to send, webhooks to receive)",
-  "main": "index.js",
+  "main": "dist/server.js",
   "author": "David Ernst <git@dsernst.com>",
   "license": "MIT",
   "private": false,
   "scripts": {
+    "build": "tsc server.ts --outDir dist --declaration",
+    "build:watch": "npm run build -- -w",
     "start": "nodemon server.ts"
   },
-  "devDependencies": {
-    "@types/node": "^18.15.7"
-  },
   "dependencies": {
+    "fastify": "^4.15.0",
     "nodemon": "^2.0.22",
     "signal-cli": "^0.11.7-2",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.7"
   },
   "prettier": {
     "printWidth": 120,
