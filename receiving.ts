@@ -1,34 +1,36 @@
 import { spawn } from 'child_process'
-import { extractSender } from './extract-sender'
 import axios from 'axios'
 import { signal } from './path-to-signal'
 import './clean-logs'
 
 const debug = !!0
 
-const command = `${signal} -a $BOT_NUMBER daemon --dbus`
+const command = `${signal} -o json -a $BOT_NUMBER daemon --dbus`
 const receivingServer = spawn(command, [], { shell: true })
-
-let mostRecentSender = { fromName: '', fromPhone: '', recipient: '' }
 
 receivingServer.stdout.on('data', (data: Buffer) => {
   const string = String(data)
-  debug && console.log(`${string}`)
+  debug && console.log(`📥 ${string}`)
 
-  // Check if this contains senders info
-  const envelopePrefix = 'Envelope from: '
-  if (string.includes(envelopePrefix)) {
-    const extracted = extractSender(string)
-    if (extracted) mostRecentSender = extracted
+  // Try to parse the incoming data as JSON
+  let json
+  try {
+    json = JSON.parse(string)
+  } catch (err) {
+    return
   }
+  const { envelope } = json
 
-  // Check if this contains a message
-  if (string.includes('Body:')) {
-    const message = string.split('Body:')[1].split('With profile key')[0].trim()
-    // console.log(`${mostRecentSender.fromName}: ${message}`)
-    axios.post('http://localhost:9461/message', { ...mostRecentSender, message })
+  // Check if this has an incoming message (not just isTyping, group updated, etc)
+  if (envelope?.dataMessage?.message) {
+    const { sourceNumber, sourceName, dataMessage } = envelope
+    const { message, groupInfo } = dataMessage
+    const groupId = groupInfo?.groupId
+
+    // Forward to webhook
+    axios.post('http://localhost:9461/message', { message, sourceName, sourceNumber, groupId })
   }
 })
 
-receivingServer.stderr.on('data', (d: Buffer) => console.log(`stderr 🟡: ${String(d).trim()}`))
+receivingServer.stderr.on('data', (d: Buffer) => console.log(`🟡 stderr: ${String(d).trim()}`))
 receivingServer.on('error', (err: Buffer) => debug && console.error('err ❌:', err))
