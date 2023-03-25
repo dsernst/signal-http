@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# TODO: Convert to use .env instead
 # Import config variables
 . ./config.sh
 

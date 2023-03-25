@@ -1,8 +1,8 @@
 node_modules/
-config.sh
 package-lock.json
 yarn.lock
 avatar.png
 *.log
 dist/
 .vscode/
+.env
