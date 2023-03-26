@@ -11,12 +11,10 @@ app.post('/send', (req, res) => {
 
   // Is it ready to send out?
   if (to) {
-    const escaped = (message || '')
-      .replace(/\\/g, '\\\\')
-      // .replace(/'/g, "'\\''") Not needed
-      .replace(/"/g, '\\"')
-      .replace(/\[/g, '\\[')
-      .replace(/\]/g, '\\]')
+    const escaped = (message || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+    // .replace(/'/g, "'\\''") Not needed
+    // .replace(/\[/g, '\\[')
+    // .replace(/\]/g, '\\]')
     let command = `${signal} --dbus send -m "${escaped}" ${toGroup ? `-g ${toGroup}` : to}`
     if (!debug) command += ' 2> /dev/null'
     try {
