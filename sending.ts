@@ -30,4 +30,5 @@ app.post('/send', (req, res) => {
   }
 })
 
-app.listen({ port: 9460 }, () => console.log('🟢 Signal sending server listening on port 9460'))
+const port = 9460
+app.listen({ port }, () => console.log(`🟢 signal-http live on port ${port}`))
