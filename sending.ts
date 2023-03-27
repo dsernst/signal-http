@@ -11,7 +11,7 @@ app.post('/send', (req, res) => {
 
   // Is it ready to send out?
   if (to) {
-    const escaped = (message || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+    const escaped = (message || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/`/g, '\\`')
     // .replace(/'/g, "'\\''") Not needed
     // .replace(/\[/g, '\\[')
     // .replace(/\]/g, '\\]')
